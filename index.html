@@ -89,6 +89,8 @@
         var infoWin;
         var geocoder;
         var map, zoom = 12, handler;
+        //初始化中台链接
+        var bridgeClient = new window.formbridgeClient();
 
         function onLoad() {
             //初始化地图对象
@@ -124,6 +126,14 @@
             var cp = new T.CoordinatePickup(map, {callback: getLngLat})
             cp.addEvent();
 
+            //初始化中台链接
+            console.log(123)
+            console.log(bridgeClient)
+            bridgeClient.onReady(() => {
+                bridgeClient.onReceiveData((data) => {
+                    console.log(data);
+                });
+            })
         }
 
         //创建标注点
@@ -147,8 +157,8 @@
                 layer.msg('请先标记地点！', {icon: 0}, function(){
                 });
             }else {
-                var bridgeClient = new window.formbridgeClient();
-                bridgeClient.postData(handler.getMarkers()[0].or);
+                var resultData = bridgeClient.postData(handler.getMarkers()[0].or);
+                console.log(resultData)
                 layer.msg('保存成功！', {icon: 0}, function(){
                 });
                 bridgeClient.close();
@@ -194,7 +204,7 @@
             geocoder.getPoint(document.getElementById("keyWord").value, searchResult);
         }
 
-        //添加收缩标记
+        //添加搜索标记
         function searchResult(result)
         {
             if(result.getStatus() == 0){
@@ -230,9 +240,8 @@
             map.clearOverLays();
         }
 
-        //清除标注点
+        //中台关闭弹框
         function closeFrame(){
-            var bridgeClient = new window.formbridgeClient()
             bridgeClient.close();
         }
 
