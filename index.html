@@ -84,6 +84,8 @@
         }
 
     </style>
+    
+
     <script>
         var localsearch;
         var infoWin;
@@ -96,10 +98,10 @@
             bridgeClient.onReceiveData((data) => {
                 console.log(data);
                 //if (data.detail === false){
-                document.getElementById("marker").hidden = true;
-                document.getElementById("clear").hidden = true;
-                document.getElementById("save").hidden = true;
-                document.getElementById("keyWord").hidden = true;
+                let classList = document.getElementsByClassName("hiddenClass")
+                for (let i = 0; i < classList.length; i++){
+                    classList[i].style.display = "none";
+                }
                 //}
             });
         })
@@ -137,19 +139,6 @@
 
             var cp = new T.CoordinatePickup(map, {callback: getLngLat})
             cp.addEvent();
-
-	    bridgeClient.onReady(() => {
-            	bridgeClient.onReceiveData((data) => {
-			console.log("onload内部");
-                	console.log(data);
-                	//if (data.detail === false){
-                	document.getElementById("marker").hidden = true;
-                	document.getElementById("clear").hidden = true;
-                	document.getElementById("save").hidden = true;
-                	document.getElementById("keyWord").hidden = true;
-                //}
-            });
-        })
         }
 
         //创建标注点
@@ -185,8 +174,6 @@
                     layer.msg('地址标注有误，请重新标注！', {icon: 0}, function(){
                     });
                 }
-
-
             }
         }
 
@@ -275,10 +262,10 @@
 <body onLoad="onLoad()">
 <div id="mapDiv">
     <div  id="but">
-        <input type="button" class="layui-btn layui-btn-normal layui-btn-radius" id="marker" value="标注" onClick='openMarkerTool() '/>
-        <input type="button" class="layui-btn layui-btn-normal layui-btn-radius" id="clear" value="清除标注" onClick='clearMarker()'/>
+        <input type="button" class="layui-btn layui-btn-normal layui-btn-radius hiddenClass" id="marker" value="标注" onClick='openMarkerTool() '/>
+        <input type="button" class="layui-btn layui-btn-normal layui-btn-radius hiddenClass" id="clear" value="清除标注" onClick='clearMarker()'/>
         <!-- 搜索面板 -->
-        <div class="layui-form-item" style="margin-top: 10px" >
+        <div class="layui-form-item hiddenClass" style="margin-top: 10px" >
             <div class="layui-input-group" style="width: 283px;">
                 <input type="text"   class="layui-input"  type="text" id="keyWord" placeholder="请输入" value="" onpropertychange="localsearch.search(document.getElementById('keyWord').value,4)">
                 <div class="layui-input-split layui-input-suffix" style="cursor: pointer;background-color: #1e9efd">
@@ -291,8 +278,8 @@
         <div id="suggestsDiv"  class="suggests layui-panel"></div>
     </div>
 
-    <input type="button" id="cancel" class="layui-btn layui-btn-primary layui-btn-radius " value="取消" onClick='closeFrame()'/>
-    <input type="button" id="save" class="layui-btn layui-btn-normal layui-btn-radius " value="保存" onClick='getIndex()'/>
+    <input type="button" id="cancel" class="layui-btn layui-btn-primary layui-btn-radius hiddenClass" value="取消" onClick='closeFrame()'/>
+    <input type="button" id="save" class="layui-btn layui-btn-normal layui-btn-radius hiddenClass" value="保存" onClick='getIndex()'/>
 
 </div>
 </body>
