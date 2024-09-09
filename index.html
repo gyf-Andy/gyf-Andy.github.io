@@ -92,6 +92,12 @@
         //初始化中台链接
         var bridgeClient = new window.formbridgeClient();
 
+        bridgeClient.onReady(() => {
+            bridgeClient.onReceiveData((data) => {
+                console.log(data);
+            });
+        })
+
         function onLoad() {
             //初始化地图对象
             map = new T.Map("mapDiv");
@@ -125,15 +131,6 @@
 
             var cp = new T.CoordinatePickup(map, {callback: getLngLat})
             cp.addEvent();
-
-            //初始化中台链接
-            console.log(123)
-            console.log(bridgeClient)
-            bridgeClient.onReady(() => {
-                bridgeClient.onReceiveData((data) => {
-                    console.log(data);
-                });
-            })
         }
 
         //创建标注点
