@@ -97,12 +97,12 @@
         bridgeClient.onReady(() => {
             bridgeClient.onReceiveData((data) => {
                 console.log(data);
-                //if (data.detail === false){
+                if (data.detail !== false){
                 let classList = document.getElementsByClassName("hiddenClass")
                 for (let i = 0; i < classList.length; i++){
                     classList[i].style.display = "none";
                 }
-                //}
+                }
             });
         })
 
