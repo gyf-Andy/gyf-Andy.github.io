@@ -92,6 +92,17 @@
         //初始化中台链接
         var bridgeClient = new window.formbridgeClient();
 
+        bridgeClient.onReady(() => {
+            bridgeClient.onReceiveData((data) => {
+                console.log(data);
+                //if (data.detail === false){
+                document.getElementById("marker").hidden = true;
+                document.getElementById("clear").hidden = true;
+                document.getElementById("save").hidden = true;
+                document.getElementById("keyWord").hidden = true;
+                //}
+            });
+        })
 
         function onLoad() {
             //初始化地图对象
@@ -127,17 +138,18 @@
             var cp = new T.CoordinatePickup(map, {callback: getLngLat})
             cp.addEvent();
 
-            bridgeClient.onReady(() => {
-                bridgeClient.onReceiveData((data) => {
-                    console.log(data);
-                    //if (data.detail === false){
-                    document.getElementById("marker").hidden = true;
-                    document.getElementById("clear").hidden = true;
-                    document.getElementById("save").hidden = true;
-                    document.getElementById("keyWord").hidden = true;
-                    //}
-                });
-            })
+	    bridgeClient.onReady(() => {
+            	bridgeClient.onReceiveData((data) => {
+			console.log("onload内部");
+                	console.log(data);
+                	//if (data.detail === false){
+                	document.getElementById("marker").hidden = true;
+                	document.getElementById("clear").hidden = true;
+                	document.getElementById("save").hidden = true;
+                	document.getElementById("keyWord").hidden = true;
+                //}
+            });
+        })
         }
 
         //创建标注点
