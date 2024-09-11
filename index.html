@@ -4,9 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title>地图定位标点-tian</title>
     <script type="text/javascript" src="https://api.tianditu.gov.cn/api?v=4.0&tk=503a6bf92249bf59135d2b998535bdd3"></script>
-<!--     <script type="text/javascript" src="http://api.tianditu.gov.cn/api?v=4.0&tk=221db98e43cf32b0508f6438bf84751d"></script>-->
+    <!--     <script type="text/javascript" src="http://api.tianditu.gov.cn/api?v=4.0&tk=221db98e43cf32b0508f6438bf84751d"></script>-->
     <!-- 天地图封装js -->
-<!--    <script src="/src/main/resources/static/temporary/jquery-1.7.2.min.js"></script>-->
+    <!--    <script src="/src/main/resources/static/temporary/jquery-1.7.2.min.js"></script>-->
     <script src="https://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
     <!--中台传参数-->
     <script src="https://assets.zjzwfw.gov.cn/assets/assets/0.2.0/formbridge/1.0.2/formbridge-client.umd.js"></script>
@@ -83,6 +83,17 @@
             right: 20px;
         }
 
+        #close{
+            z-index: 999;
+            position:fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: #1f2b29;
+            cursor: pointer;
+        }
+
+
     </style>
 
 
@@ -94,14 +105,28 @@
         //初始化中台链接
         var bridgeClient = new window.formbridgeClient();
 
+        var lng;
+        var lat;
+
+        var initMarker = false;
+
         bridgeClient.onReady(() => {
             bridgeClient.onReceiveData((data) => {
                 console.log(data);
                 if (data.detail !== false){
-                let classList = document.getElementsByClassName("hiddenClass")
-                for (let i = 0; i < classList.length; i++){
-                    classList[i].style.display = "none";
-                }
+                    let classList = document.getElementsByClassName("hiddenClass")
+                    console.log(classList)
+                    for (let i = 0; i < classList.length; i++){
+                        classList[i].style.display = "none";
+                    }
+                    lng = data.lng;
+                    lat = data.lat;
+                    initMarker = true;
+                }else if (data.detail === false){
+                    let closeIcon = document.getElementById("close")
+                    closeIcon.style.display = "none";
+                    lng = 116.397477;
+                    lat = 39.908692;
                 }
             });
         })
@@ -110,10 +135,10 @@
             //初始化地图对象
             map = new T.Map("mapDiv");
             //设置显示地图的中心点和级别
-            map.centerAndZoom(new T.LngLat(116.397477, 39.908692), zoom);
+            map.centerAndZoom(new T.LngLat(lng, lat), zoom);
             //允许鼠标双击放大地图
             map.enableScrollWheelZoom();
-            
+
             var config = {
                 pageCapacity: 10,	//每页显示的数量
                 onSearchComplete: localSearchResult,	//接收数据的回调函数
@@ -127,12 +152,19 @@
                 localsearch.search(document.getElementById('keyWord').value,4)
             });
 
-	        //设置放大级别
-	        map.setMinZoom(0);
+            //设置放大级别
+            map.setMinZoom(0);
             map.setMaxZoom(18);
 
             //创建标注工具对象
             handler = new T.MarkTool(map, {follow: true});
+
+            //初始化标注点
+            if (initMarker){
+                var marker = new T.Marker(new T.LngLat(lng, lat));
+                //向地图上添加标注
+                map.addOverLay(marker);
+            }
 
             //创建对象（根据地址定位坐标）
             geocoder = new T.Geocoder();
@@ -264,6 +296,7 @@
     <div  id="but">
         <input type="button" class="layui-btn layui-btn-normal layui-btn-radius hiddenClass" id="marker" value="标注" onClick='openMarkerTool() '/>
         <input type="button" class="layui-btn layui-btn-normal layui-btn-radius hiddenClass" id="clear" value="清除标注" onClick='clearMarker()'/>
+        <i id="close" class="layui-icon layui-icon-clear" ></i>
         <!-- 搜索面板 -->
         <div class="layui-form-item hiddenClass" style="margin-top: 10px" >
             <div class="layui-input-group" style="width: 283px;">
@@ -278,12 +311,9 @@
         <div id="suggestsDiv"  class="suggests layui-panel"></div>
     </div>
 
-    <input type="button" id="cancel" class="layui-btn layui-btn-primary layui-btn-radius " value="取消" onClick='closeFrame()'/>
+    <input type="button" id="cancel" class="layui-btn layui-btn-primary layui-btn-radius hiddenClass" value="取消" onClick='closeFrame()'/>
     <input type="button" id="save" class="layui-btn layui-btn-normal layui-btn-radius hiddenClass" value="保存" onClick='getIndex()'/>
 
 </div>
 </body>
 </html>
-
-
-
