@@ -113,7 +113,12 @@
         bridgeClient.onReady(() => {
             bridgeClient.onReceiveData((data) => {
                 console.log(data);
-                if (data.detail !== false){
+                if (data.lng === null && data.lat === null){
+                    let closeIcon = document.getElementById("close")
+                    closeIcon.style.display = "none";
+                    lng = 116.397477;
+                    lat = 39.908692;
+                }else {
                     let classList = document.getElementsByClassName("hiddenClass")
                     console.log(classList)
                     for (let i = 0; i < classList.length; i++){
@@ -122,11 +127,6 @@
                     lng = data.lng;
                     lat = data.lat;
                     initMarker = true;
-                }else if (data.detail === false){
-                    let closeIcon = document.getElementById("close")
-                    closeIcon.style.display = "none";
-                    lng = 116.397477;
-                    lat = 39.908692;
                 }
             });
         })
