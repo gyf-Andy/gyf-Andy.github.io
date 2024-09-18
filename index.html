@@ -270,12 +270,17 @@
                 //向地图上添加信息窗口
                 map.addOverLay(infoWin);
                 map.panTo(result.getLocationPoint(), 18);
-                sleep(2000);
+                sleep(2000)
                 clearMarker();
             }else{
                 layer.msg(result.getMsg(), {icon: 0}, function(){
                 });
             }
+        }
+
+        //休眠方法
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         //填充搜索框
