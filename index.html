@@ -269,13 +269,13 @@
                 infoWin.setContent(document.getElementById("keyWord").value);
                 //向地图上添加信息窗口
                 map.addOverLay(infoWin);
-
-                map.panTo(result.getLocationPoint(), 16);
+                map.panTo(result.getLocationPoint(), 18);
+                sleep(2000);
+                clearMarker();
             }else{
                 layer.msg(result.getMsg(), {icon: 0}, function(){
                 });
             }
-
         }
 
         //填充搜索框
