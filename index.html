@@ -271,7 +271,6 @@
                 map.addOverLay(infoWin);
                 map.panTo(result.getLocationPoint(), 18);
                 sleep(2000)
-                clearMarker();
             }else{
                 layer.msg(result.getMsg(), {icon: 0}, function(){
                 });
@@ -280,7 +279,9 @@
 
         //休眠方法
         function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+            console.log("sleep start")
+            setTimeout(() => map.clearOverLays(), ms)
+            console.log("sleep end")
         }
 
         //填充搜索框
